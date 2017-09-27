@@ -7,8 +7,55 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine(print(15));
+        var nesto = "Domagoj";
+        Console.WriteLine(BreakCamelCase("camelCasingTestBest"));
     }
+
+    //kao što i naslov govori
+    public static string BreakCamelCase(string str)
+    {
+        var listaVelikihSlova = new List<int>();
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (char.IsUpper(str[i]))
+                listaVelikihSlova.Add(i);
+        }
+        foreach (var item in listaVelikihSlova)
+        {
+
+        }
+        return str;
+    }
+
+    //vraćanje 5 najvećih brojeva (za redom) u nekom dobivenom broju
+    public static int GetNumber(string str)
+    {
+        int najveciBroj = 0;
+        for (int i = 0; i < str.Length - 4; i++)
+        {
+            var broj = int.Parse(str.Substring(i, 5));
+            if (broj > najveciBroj)
+            {
+                najveciBroj = broj;
+            }
+        }
+        return najveciBroj;
+    }
+
+    //validiranje pina (4 do 6 znakova, samo brojevi)
+    public static bool ValidatePin(string pin)
+    {
+        if (pin.Length != 4 && pin.Length != 6)
+            return false;
+        foreach (var item in pin)
+        {
+            if (Char.IsDigit(item) == false)
+                return false;
+        }
+
+        return true;
+    }
+
     //ispisivanje dijamanta
     public static string print(int n)
     {
