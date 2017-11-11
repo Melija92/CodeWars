@@ -7,24 +7,84 @@ class Program
 {
     static void Main(string[] args)
     {
-        var nesto = "Domagoj";
-        Console.WriteLine(BreakCamelCase("camelCasingTestBest"));
+        Console.WriteLine(NextBiggerNumber(144));
+
+    }
+    //ako
+    public static long NextBiggerNumber(long n)
+    {
+        var charovi = n.ToString().ToCharArray();
+        bool istina = false;
+        int pozicija = 0;
+        for (int i = charovi.Length - 1; i >= 0; i--)
+        {
+            if (i == 0)
+                break;
+            if (charovi[i - 1] < charovi[i])
+            {
+                istina = true;
+                pozicija = i - 1;
+                break;
+            }
+        }
+
+        if (istina == false)
+            return -1;
+        else
+        {
+            string premjesten = new string(charovi);
+            string prviDio = premjesten.Substring(0, pozicija);
+            var pivot = premjesten[pozicija].ToString();
+            var zadnjiDio = premjesten.Remove(0, pozicija + 1).OrderBy(a => a).ToArray();
+            var zaLoop = new string(premjesten.Remove(0, pozicija + 1).OrderBy(a => a).ToArray());
+            char[] noviString;
+            string zadnjiString;
+            string noviPivot;
+            for (int i = 0; i < zaLoop.Length; i++)
+            {
+
+                if (Int32.Parse(zaLoop[i].ToString()) > Int32.Parse(pivot))
+                {
+                    noviPivot = zadnjiDio[i].ToString();
+                    string privremeno = zaLoop.Remove(i, 1);
+                    noviString = String.Format("{0}{1}", privremeno, pivot)
+                        .OrderBy(a => a)
+                        .ToArray();
+                    zadnjiString = new string(noviString);
+                    return long.Parse(String.Format("{0}{1}{2}", prviDio, noviPivot, zadnjiString));
+                }
+            }
+            return -1;
+        }
     }
 
+
+    public static string SplitCamelCase(string input)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+    }
     //kao što i naslov govori
     public static string BreakCamelCase(string str)
     {
-        var listaVelikihSlova = new List<int>();
+        var listaRijeci = new List<string>();
         for (int i = 0; i < str.Length; i++)
         {
             if (char.IsUpper(str[i]))
-                listaVelikihSlova.Add(i);
+            {
+                listaRijeci.Add(str.Remove(i));
+            }
         }
-        foreach (var item in listaVelikihSlova)
+        listaRijeci.Add(str);
+        for (int i = listaRijeci.Count - 1; i >= 0; i--)
         {
-
+            if (i == 0)
+                continue;
+            else if (listaRijeci[i].Contains(listaRijeci[i - 1]))
+            {
+                listaRijeci[i] = listaRijeci[i].Replace(listaRijeci[i - 1], "");
+            }
         }
-        return str;
+        return String.Join(" ", listaRijeci);
     }
 
     //vraćanje 5 najvećih brojeva (za redom) u nekom dobivenom broju
